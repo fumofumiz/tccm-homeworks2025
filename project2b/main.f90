@@ -2,7 +2,8 @@ program main
         implicit none
         integer :: n,i,j,niter
         real*8,allocatable :: a(:,:),b(:)
-        
+        real*8 :: lambda
+         
         !Request dimension of the matrix, allocate it, and fill it
         write(*,*) 'dimension of the matrix'
         read(*,*) n
@@ -25,11 +26,21 @@ program main
         
         !Generate random vector
         allocate (b(n))
+        call random_number(b)
+        write(*,*) 'random matrix',b
 
+        lambda=0.0d0
         do i=1,niter
-                
+           b=matmul(a,b)           
         enddo
+       
+        lambda = dot_product(b,matmul(a,b))/dot_product(b,b) 
+        
+        write(*,*) 'lambda', lambda
 
-deallocate(a)     
+deallocate(a,b)     
 return 
 end program main 
+
+
+          
