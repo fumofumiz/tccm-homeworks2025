@@ -1,12 +1,14 @@
-program main 
+program main
+
         use omp_lib
+
         implicit none
         integer :: n,i,j,niter,seed,k,l
         real*8,allocatable :: a(:,:),b(:),b0(:),c(:)
         real*8 :: lambda,tcpustart,tcpuend,tgpustart,tgpuend,dd,tmp,rootdd
          
         !Check that openMP sees the GPU
-        print *, "NUM DEVICES:", omp_get_num_devices()
+        !print *, "NUM DEVICES:", omp_get_num_devices()
 
         !Request dimension of the matrix, allocate it, and fill it
         write(*,*) 'dimension of the matrix'
@@ -24,6 +26,7 @@ program main
         write(*,*) 'number of iterations'
         read(*,*) niter
         write(*,*) niter
+
         !Check 
         !do i=1,n
         !write(*,*) a(i,:)
@@ -38,6 +41,9 @@ program main
 
         b=b/dsqrt(dot_product(b,b))     
         b0=b
+
+        write(*,*)
+        write(*,*) '------------------- CPU ONLY FORTRAN FUNCTIONS ---------------------'
         tcpustart=omp_get_wtime()
         do i=1,niter
            b=matmul(a,b)
@@ -48,12 +54,17 @@ program main
         lambda = dot_product(b,matmul(a,b))/dot_product(b,b) 
         
         write(*,*) 'lambda', lambda
+        write(*,*) 'execution time cpu', tcpuend-tcpustart
         
         b=b0 
         dd=0.d0
         allocate(c(n))
         c=0.d0
-        write(*,*) 'b',b
+          
+        !Check
+        !write(*,*) 'b',b
+        write(*,*)
+        write(*,*) '------------------- GPU ---------------------'
         tgpustart=omp_get_wtime()
         !$omp target data map(a,b,c,dd,rootdd)
         do i=1,niter
@@ -70,30 +81,39 @@ program main
            enddo
            !$omp target teams distribute parallel do reduction(+:dd)
            do k=1,n
-           dd=dd+c(k)*c(k)
+            dd=dd+c(k)*c(k)
            enddo
+           !$omp target update from(dd)
            rootdd=dsqrt(dd)
+           !$omp target update to(dd)
            !$omp target teams distribute parallel do
            do k = 1,n
             c(k) = c(k)/rootdd
             b(k) = c(k)
            enddo
         enddo
-         !$omp end target data
-        write(*,*) 'c',c 
+        !$omp end target data
+
+        !Check
+        !write(*,*) 'c',c
+
         tgpuend=omp_get_wtime()
         lambda = 0.d0
         lambda = dot_product(b,matmul(a,b))/dot_product(b,b)
 
         write(*,*) 'lambda', lambda
-        write(*,*) 'execution time cpu', tcpuend-tcpustart
         write(*,*) 'execution time gpu', tgpuend-tgpustart
-
-        write(*,*) '----------------------------- CPU ONLY -------------------------------------'
+         
+        write(*,*) 
+        write(*,*) '------------------- CPU ONLY EXPLICIT FUNCTION ---------------------'
 
         b=b0
         c=0.d0
-        write(*,*) a
+
+        !Check 
+        !write(*,*) a
+       
+        tcpustart=omp_get_wtime()
         do i=1,niter
            c=0.d0
            dd=0.d0
@@ -108,10 +128,12 @@ program main
            c=c/dsqrt(dd)
            b=c
         enddo
-         lambda = 0.d0
+        tcpuend=omp_get_wtime()
+        lambda = 0.d0
         lambda = dot_product(b,matmul(a,b))/dot_product(b,b)
 
         write(*,*) 'lambda', lambda
+        write(*,*) 'execution time cpu', tcpuend-tcpustart
 
 deallocate(a,b,c,b0)     
 return 
