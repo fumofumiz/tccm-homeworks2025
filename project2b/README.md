@@ -1,3 +1,14 @@
+To compile the program
+
+module load nvhpc
+
+To submit the job to cineca use
+
+./submit.sh
+
+
+
+
 POWER METHOD 
 
 DESCRIPTION
@@ -28,3 +39,4 @@ integer :: niter #Number of iterations of the Power Method
 Program variables 
 
  
+
