@@ -1,0 +1,20 @@
+ dimension of the matrix
+         2500
+ 
+ convergence threshold
+   1.0000000000000000E-003
+ 
+ maximum number of iterations
+          100
+ 
+ ------------------- CPU ONLY FORTRAN FUNCTIONS ---------------------
+ lambda    1.966605051434831     
+ execution time cpu   0.4408447742462158     
+ 
+ ------------------- GPU ---------------------
+ lambda    1.966605051434829     
+ execution time gpu   0.2454440593719482     
+ 
+ ------------------- CPU ONLY EXPLICIT FUNCTION ---------------------
+ lambda    1.966605051434833     
+ execution time cpu    3.654160976409912     
