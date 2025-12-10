@@ -20,19 +20,22 @@ For each the program provides the eigenvalue and the execution time separately.
 
 REQUIREMENTS
 
-In order to compile and run the code the program needs nvhpc module.
+In order to compile and run the code the program needs the nvhpc module.
 
 PORTING DESCRIPTION
 
 SYNTAX 
 
 compilation:
+
 nvfortran -mp=gpu -gpu=cc70 main.f90 -o main
 
 execution (local):
+
 ./main
 
 execution (with SLURM):
+
 sbatch submit.sh
 
 The input file has to be called 'input' in order to use the program'
