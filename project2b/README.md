@@ -1,23 +1,24 @@
-To compile the program
-
-module load nvhpc
-
-To submit the job to cineca use
-
-./submit.sh
-
-
-
-
 POWER METHOD 
 
 DESCRIPTION
-The program computes the first eigenvalue of a symmetric matrix using the power method.
-Two implementation are provided:
-1. CPU version
-2. GPU version, using OpenMP to accelerate the matrix-vector multiplication
+The program computes using the power method the first eigenvalue of a symmetric matrix filled as the following
 
-Execution time is measured separately for the CPU and GPU implementation.
+        do i=1,n-1
+           j=i+1
+           a(i,j) = 1.0d0
+           a(j,i) = 1.0d0
+        enddo
+
+The dimension, the convergence threshold and the maximum number of iterations are provided by the user. 
+
+Three implementations are provided:
+1. CPU version, using FORTRAN functions
+2. GPU version, using OpenMP to accelerate the matrix-vector multiplication
+3. CPU version, using the non parallelized GPU code
+
+Execution time is measured separately in each case. 
+
+PORTING DESCRIPTION
 
 SYNTAX 
 
@@ -30,13 +31,19 @@ execution (local):
 execution (with SLURM):
 sbatch submit.sh
 
+The input file has to be called 'input' in order to use the program'
+
 INPUT PARAMETERS 
 
 Program input (from standard input)
 integer :: n #Dimension of the matrix a(n,n)
-integer :: niter #Number of iterations of the Power Method 
+real :: eps #Convergence threshold
+integer :: nmax #Number of maximum iterations of the power method 
 
-Program variables 
+PROGRAM VARIABLES
 
- 
+OUTPUT FORMAT
+
+
+
 
