@@ -9,14 +9,18 @@ The program computes using the power method the first eigenvalue of a symmetric 
            a(j,i) = 1.0d0
         enddo
 
-The dimension, the convergence threshold and the maximum number of iterations are provided by the user. 
+The dimension, the convergence threshold and the maximum number of iterations are provided as input and the program outputs the eigenvalue and the execution time. 
 
 Three implementations are provided:
 1. CPU version, using FORTRAN functions
 2. GPU version, using OpenMP to accelerate the matrix-vector multiplication
 3. CPU version, using the non parallelized GPU code
 
-Execution time is measured separately in each case. 
+For each the program provides the eigenvalue and the execution time separately. 
+
+REQUIREMENTS
+
+In order to compile and run the code the program needs nvhpc module.
 
 PORTING DESCRIPTION
 
