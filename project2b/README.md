@@ -15,11 +15,24 @@ The symmetric matrix is filled as the following
            a(j,i) = 1.0d0
         enddo
 
-SYNTAX
+REQUIREMENTS
+
+In order to compile and run the code the program needs the nvhpc module.
+
+PORTING DESCRIPTION
+
+SYNTAX 
+
 compilation:
+
 nvfortran -mp=gpu -gpu=cc70 main.f90 -o main
 
+execution (local):
+
+./main
+
 execution (with SLURM):
+
 sbatch submit.sh
 
 PROGRAM STRUCTURE 
