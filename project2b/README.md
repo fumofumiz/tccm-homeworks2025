@@ -12,12 +12,22 @@ To submit the job to cineca use
 POWER METHOD 
 
 DESCRIPTION
-The program computes the power method to compute the dominant eigenvalue of a symmetric matrix.
+
+The program computes the first eigenvalue of a symmetric matrix using the power method.
 Three different implementation are provided:
 1. CPU version with fortran intrinsic functions <matmul> and <dot_product>
 2. GPU version, using OpenMP Offloading 
 3. CPU version using manual nested loops 
-The objective is to compare the execution time of CPU and GPU.
+The objective is to compare the execution time of CPU and GPU which are computed separately in the implementations.
+
+(FRANZ:The program computes the first eigenvalue of a symmetric matrix using the power method.
+Two implementation are provided:
+1. CPU version
+2. GPU version, using OpenMP to accelerate the matrix-vector multiplication
+
+Execution time is measured separately for the CPU and GPU implementation.
+
+SYNTAX )
 
 SYNTAX
 compilation:
