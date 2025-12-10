@@ -134,4 +134,50 @@ The Job is charged to the project account: tra25_tccm.
 The scripts executed the program using: 
 srun ./main < input > output
 
+RESULTS FOLDER
+A folder named results/ is included in the repository.
+It contains example input files, corresponding program outputs, and a summary spreadsheet.
+
+The following files are provided:
+INPUT FILES 
+These contain predefined parameters for different matrix sizes:
+- input_1k
+- input_2p5k
+- input_5k
+- input_10k
+- input_25k
+Each file specifies:
+- matrix dimension 
+- convergence threshold
+- maximum number of iterations 
+
+OUTPUT FILES 
+For each input file, the corresponding program output is stored:
+- output_1k
+- output_2p5k
+- output_5k
+- output_10k
+- output_25k
+These outputs include:
+- First eigenvalue 
+- execution time for CPU and GPU implementations
+
+PLOT AND SUMMARY 
+- execution_time_plot.png, a visual comparison of execution times across different matrix sizes
+- results_2b.xlsx, a collected table of timings and eigenvalues for all test cases.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
  
