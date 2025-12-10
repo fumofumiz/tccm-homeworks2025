@@ -1,33 +1,19 @@
-To compile the program
-
-module load nvhpc
-
-To submit the job to cineca use
-
-./submit.sh
-
-
-
-
 POWER METHOD 
 
 DESCRIPTION
-
 The program computes the first eigenvalue of a symmetric matrix using the power method.
 Three different implementation are provided:
-1. CPU version with fortran intrinsic functions <matmul> and <dot_product>
-2. GPU version, using OpenMP Offloading 
-3. CPU version using manual nested loops 
+1. CPU version, using FORTRAN functions <matmul> and <dot_product>
+2. GPU version, using OpenMP to accelerate matrix-vector multiplication 
+3. CPU version, using the non parallelized GPU code  
 The objective is to compare the execution time of CPU and GPU which are computed separately in the implementations.
 
-(FRANZ:The program computes the first eigenvalue of a symmetric matrix using the power method.
-Two implementation are provided:
-1. CPU version
-2. GPU version, using OpenMP to accelerate the matrix-vector multiplication
-
-Execution time is measured separately for the CPU and GPU implementation.
-
-SYNTAX )
+The symmetric matrix is filled as the following
+        do i=1,n-1
+           j=i+1
+           a(i,j) = 1.0d0
+           a(j,i) = 1.0d0
+        enddo
 
 SYNTAX
 compilation:
@@ -37,20 +23,11 @@ execution (with SLURM):
 sbatch submit.sh
 
 PROGRAM STRUCTURE 
-MATRIX CONSTRUCTION 
-The program: 
-- request the matrix dimension
-- allocates an nxn matrix
-- fills it as a tridiagonal symmetric matrix with ones on the first off-diagonals 
-
-CONVERGENCE PARAMETERS 
-The users provides:
-- a converhence threshold: eps
-- a maximum number of iterations: nmax 
-These parameters control the termnination of the Power Method loop 
-
-##############C'è da mettere la parte degli input 
-
+INPUT PARAMETERS 
+Program input (from standard input)
+integer :: n #Dimension of the matrix a(n,n)
+real :: eps #Convergence threshold
+integer :: nmax #Number of maximum iterations of the power method 
 
 INITIAL VECTOR 
 A random vector b is generated and normalized to unit length.
