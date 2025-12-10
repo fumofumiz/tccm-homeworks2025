@@ -12,7 +12,7 @@ To submit the job to cineca use
 POWER METHOD 
 
 DESCRIPTION
-The program computes eigenvalues of a symmetric matrix using the Power Method.
+The program computes the first eigenvalue of a symmetric matrix using the power method.
 Two implementation are provided:
 1. CPU version
 2. GPU version, using OpenMP to accelerate the matrix-vector multiplication
