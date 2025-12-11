@@ -19,6 +19,30 @@ program main
     call read_sparse_matrix(trim(fileA), A)
     call read_sparse_matrix(trim(fileB), B)
 
+    !check matrix A
+    write(*,*) "N=", A%n
+           write(*,*) "nnz=", A%nnz
+           write(*,*) "First 10 values of R:"
+           do i =1, min(13, A%n+1)
+              write(*,*) A%R(i)
+           enddo
+           write(*,*) "First 10 values of C vector"
+           do i=1, min(10, A%nnz)
+              write(*,*) A%C(i)
+           enddo
+
+    !check matrix B
+    write(*,*) "N=", B%n
+           write(*,*) "nnz=", B%nnz
+           write(*,*) "First 10 values of R:"
+           do i =1, min(13, B%n+1)
+              write(*,*) B%R(i)
+           enddo
+           write(*,*) "First 10 values of C vector"
+           do i=1, min(10, B%nnz)
+              write(*,*) B%C(i)
+           enddo
+
     ! dimension check
     if (A%n /= B%n) stop
 
@@ -32,17 +56,15 @@ program main
     call multiply_sparse(A, B, Cdense, n_mul)
 
     !check result
-    print *, ""
-    print *, "---------------------------------------"
-    print *, "   RESULT MULTIPLICATION A *B "
-    print *, "---------------------------------------"
-    print *, "number of multiplications", n_mul
-    print *, ""
+   
 
-    write(*,*) "Matrice risultato Cdense:"
+    write(*,*) "Resulting matrix"
     do i = 1, n
-        write(*,'(100(ES12.4))') Cdense(i,:)
-    end do
+        write(*,'(*(F12.6,1X))') Cdense(i,:)
+    enddo
+    
+    write (*,*) 'number of multiplications'
+    write(*,*) n_mul
 
  deallocate(Cdense)
 
