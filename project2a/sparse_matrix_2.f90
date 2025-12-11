@@ -3,7 +3,7 @@ program main
     implicit none
 
     type(sparse_matrix) :: A, B
-    real*8, allocatable :: Cdense(:,:)
+    real*8, allocatable :: Cdense(:,:),Ad(:,:),Bd(:,:)
     integer :: n_mul
     character(len=200) :: fileA, fileB
     integer :: n, i
@@ -65,6 +65,41 @@ program main
     
     write (*,*) 'number of multiplications'
     write(*,*) n_mul
+
+    write(*,*)
+    write(*,*) '------------------ Conversion to dense format and manual multiplication ------------------'
+
+    allocate(Ad(n,n),Bd(n,n))
+    
+    call sparse_to_dense(A,Ad,n)
+    call sparse_to_dense(B,Bd,n)
+
+    write(*,*) 'Matrice A densa' 
+    do i=1,n
+        write(*,*) Ad(i,:)
+    enddo
+
+    write(*,*) 'Matrice B densa'
+    do i=1,n
+        write(*,*) Bd(i,:)
+    enddo
+
+    call matmul_manual(Ad,Bd,Cdense,n)
+
+    write(*,*) "Resulting matrix"
+    do i = 1, n
+        write(*,'(*(F12.6,1X))') Cdense(i,:)
+    enddo 
+
+    write(*,*) 
+    write(*,*) '------------------ Multiplication with library ------------------'
+
+    Cdense=matmul(Ad,Bd)
+
+    write(*,*) "Resulting matrix"
+    do i = 1, n
+        write(*,'(*(F12.6,1X))') Cdense(i,:)
+    enddo
 
  deallocate(Cdense)
 

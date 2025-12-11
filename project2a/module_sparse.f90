@@ -1,6 +1,7 @@
 ! creation of module sparse matrix
 
  module sparse_matrix_mod
+
          implicit none
 
          type :: sparse_matrix
@@ -117,7 +118,7 @@
           implicit none
 
           type(sparse_matrix), intent(in)  :: A 
-          integer :: n,rowstart,rowend                   !A matrix dimension
+          integer :: n,rowstart,rowend,i,j               !A matrix dimension
           real*8, intent(out) :: D(n,n)
 
           !A%R(n+1)=A%R(n+1)+1                           !If the last entry of the R vector is nnz uncomment
@@ -150,7 +151,7 @@
          enddo
 
         end subroutine matmul_manual
-              
+             
 
 end module sparse_matrix_mod
 
