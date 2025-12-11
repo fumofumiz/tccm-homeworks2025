@@ -13,7 +13,6 @@
 
    contains
 
-
            subroutine read_sparse_matrix(filename,A)
                    character(len=*), intent(in) :: filename
                    type(sparse_matrix), intent(out) :: A
@@ -70,8 +69,8 @@
           real*8, intent(out) :: Cdense(:,:)
           integer, intent(inout) :: n_mul
 
-          integer :: i, j, pA, pB
-          integer :: n
+          integer :: i, j, pA, gB
+g         integer :: n
           real*8 :: y
 
          ! check if matrices have the same dimensions
@@ -113,6 +112,46 @@
     
       end subroutine multiply_sparse
 
+      subroutine sparse_to_dense(A,D,n)
+
+          implicit none
+
+          type(sparse_matrix), intent(in)  :: A 
+          integer :: n,rowstart,rowend                   !A matrix dimension
+          real*8, intent(out) :: D(n,n)
+
+          !A%R(n+1)=A%R(n+1)+1                           !If the last entry of the R vector is nnz uncomment
+           D=0.d0
+           do i=1,A%n
+                rowstart=A%R(i)
+                rowend=A%R(i+1)
+                do j=rowstart,rowend-1
+                  D(i,A%C(j))=A%V(j)
+                enddo
+           enddo
+
+       end subroutine
+
+       subroutine matmul_manual(A,B,C,N)
+
+        implicit none
+        integer, intent(in) :: N
+        real*8, intent(in) :: A(N,N),B(N,N)
+        real*8, intent(out) :: C(N,N)
+        integer :: i,j,k
+
+        do j=1,N
+           do i=1,N
+              C(i,j) = 0.d0
+              do k = 1,N
+                 C(i,j) = C(i,j) + A(i,k)*B(k,j)
+              enddo
+            enddo
+         enddo
+
+        end subroutine matmul_manual
+              
+
 end module sparse_matrix_mod
-
-
+k
+:
