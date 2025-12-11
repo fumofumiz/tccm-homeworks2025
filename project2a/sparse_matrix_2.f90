@@ -1,28 +1,49 @@
+program main
+    use sparse_matrix_mod
+    implicit none
 
+    type(sparse_matrix) :: A, B
+    real*8, allocatable :: Cdense(:,:)
+    integer :: n_mul
+    character(len=200) :: fileA, fileB
+    integer :: n, i
 
-   program  main
+    ! file names
+    write(*,*) "Insert name file matrix A"
+    read(*,'(A)') fileA
 
-           use sparse_matrix_mod
-           implicit none
+    write(*,*) "Insert name file matrix B"
+    read(*,'(A)') fileB
 
-           type(sparse_matrix) :: A
-           character(len=200) :: fname
-           integer :: i, nmul
+    ! read the files from subroutine
+    call read_sparse_matrix(trim(fileA), A)
+    call read_sparse_matrix(trim(fileB), B)
 
-           write(*,*) "Enter sparse matrix file name"
-           read(*,'(A)') fname
+    ! dimension check
+    if (A%n /= B%n) stop
 
-           call read_sparse_matrix(trim(fname),A)
+    n = A%n
 
-           write(*,*) "N=", A%n
-           write(*,*) "nnz=", A%nnz
-           write(*,*) "First 10 values of R:"
-           do i =1, min(13, A%n+1)
-              write(*,*) A%R(i)
-           enddo
-           write(*,*) "First 10 values of C vector"
-           do i=1, min(10, A%nnz)
-              write(*,*) A%C(i)
-           enddo
+    ! allocate resulting matrix
+    allocate(Cdense(n,n))
+
+    !multiplication
+    n_mul = 0
+    call multiply_sparse(A, B, Cdense, n_mul)
+
+    !check result
+    print *, ""
+    print *, "---------------------------------------"
+    print *, "   RESULT MULTIPLICATION A *B "
+    print *, "---------------------------------------"
+    print *, "number of multiplications", n_mul
+    print *, ""
+
+    write(*,*) "Matrice risultato Cdense:"
+    do i = 1, n
+        write(*,'(100(ES12.4))') Cdense(i,:)
+    end do
+
+ deallocate(Cdense)
 
 end program main
