@@ -97,9 +97,9 @@
 
             do pA = A%R(i), A%R(i+1)-1   !vector R of A
                 do pB = B%R(j), B%R(j+1)-1    ! vector R of B
-                    if (A%C(pA) .lt. B%C(pB)) then
-                       exit
-                    end if
+                  !  if (A%C(pA) .lt. B%C(pB)) then
+                   !    exit
+                   ! end if
                     if (A%C(pA) == B%C(pB)) then
                         y = y + A%V(pA) * B%V(pB)
                         n_mul= n_mul + 1 
