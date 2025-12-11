@@ -40,7 +40,7 @@
                  do i=1, A%n+1
                     if (A%R(i) .gt. maxR) maxR = A%R(i)
                  enddo
-                 A%nnz= maxR 
+                 A%nnz= maxR-1 !considering the last row value (nnz +1) 
 
                 !allocate C and read C
                 allocate(A%C(A%nnz))
@@ -69,8 +69,8 @@
           real*8, intent(out) :: Cdense(:,:)
           integer, intent(inout) :: n_mul
 
-          integer :: i, j, pA, gB
-g         integer :: n
+          integer :: i, j, pA, pB
+          integer :: n
           real*8 :: y
 
          ! check if matrices have the same dimensions
@@ -153,5 +153,5 @@ g         integer :: n
               
 
 end module sparse_matrix_mod
-k
-:
+
+
