@@ -8,8 +8,13 @@ Computes a matrix–matrix product with symmetric sparse matrices.
 
 ## Description
 
-This Fortran program loads two sparse matrices, multiplies them using different
-methods in both sparse and dense formats, and reports performance metrics,
+This Fortran program loads two sparse matrices and multiplies them using different
+methods:
+
+- **`n`**
+**`n`**
+
+and reports performance metrics,
 scaling behavior, and fill-in of the resulting matrix.
 
 ---
@@ -109,6 +114,55 @@ counts the total number of scalar multiplications performed.
 
 ---
 
+### Subroutine `sparse_to_dense(A,D,n)`
+
+This subroutine converts a matrix in `sparse_matrix` into standard format. 
+
+**Input arguments:**
+ - **`A`**
+   Matrix given in the `sparse_matrix` data format. 
+
+ - **`n`**
+   Dimension of the matrix A and D.
+
+**Output arguments:**
+ - **`D`**
+   Matrix in standard (dense) format.
+
+**Local variables:**
+ -**`rowstart`**
+  
+ -**`rowend`**
+
+ -**`i,j`**
+---
+
+### Subroutine `manual_matmul(A,B,C,N)`
+
+This subroutine multiplies two matrices of dimension (N,N). The multiplication is done 
+
+**Input arguments:**
+ -**`A`**
+  Dimension of matrix A.
+
+ -**`B`**
+  Dimension of matrix B.
+
+ -**`N`**
+  Dimension of matrices A,B.
+
+**Output arguments:**
+
+ -**`C`**
+  Matrix of dimension N.
+
+**Local variables:**
+  
+ -**`i,j,k`**
+  Indexes for loop.
+
+---
+
 ### Algorithm Description
 
 The subroutine first checks whether the two input matrices have the same
@@ -122,3 +176,7 @@ multiplication increments the counter `n_mul`.
 
 Finally, the accumulated value `y` is stored in the dense result matrix
 `Cdense`.
+
+--- 
+
+###
