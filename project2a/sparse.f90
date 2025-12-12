@@ -4,50 +4,61 @@ program main
 
     type(sparse_matrix) :: A, B
     real*8, allocatable :: Cdense(:,:),Ad(:,:),Bd(:,:)
-    integer :: n_mul, num_loop 
+    integer :: n_mul, num_loop,debug 
     character(len=200) :: fileA, fileB
     integer :: n, i
     real*8 :: t_start, t_end
 
-    ! file names
+    !ask for matrix A name
     write(*,*) "Insert name file matrix A"
     read(*,'(A)') fileA
+    write(*,*) fileA
 
+    !ask for matrix B name
     write(*,*) "Insert name file matrix B"
     read(*,'(A)') fileB
+    write(*,*) fileB
 
     ! num_loop of multiplication
     write(*,*) 'Insert number of loops to check time'
     read(*,*) num_loop
+    write(*,*) num_loop
+
+    debug=0
+    !ask for printing matrices or not
+    write(*,*) 'Do you want to print the matrices? 0=No, 1=Yes'
+    read(*,*) debug
+    write(*,*) debug
 
     ! read the files from subroutine
     call read_sparse_matrix(trim(fileA), A)
     call read_sparse_matrix(trim(fileB), B)
 
-    
+    if (debug.ne.0) 
     !check matrix A
-    ! write(*,*) "N=", A%n
-    !       write(*,*) "nnz=", A%nnz
-    !       write(*,*) "First 10 values of R:"
-    !       do i =1, min(13, A%n+1)
-    !          write(*,*) A%R(i)
-    !       enddo
-    !       write(*,*) "First 10 values of C vector"
-    !       do i=1, min(10, A%nnz)
-    !          write(*,*) A%C(i)
-    !       enddo
-
+     write(*,*) "N=", A%n
+           write(*,*) "nnz=", A%nnz
+           write(*,*) "First 10 values of R:"
+           do i =1, min(13, A%n+1)
+              write(*,*) A%R(i)
+           enddo
+           write(*,*) "First 10 values of C vector"
+           do i=1, min(10, A%nnz)
+              write(*,*) A%C(i)
+           enddo
+    
     !check matrix B
-    ! write(*,*) "N=", B%n
-    !       write(*,*) "nnz=", B%nnz
-    !       write(*,*) "First 10 values of R:"
-    !       do i =1, min(13, B%n+1)
-    !          write(*,*) B%R(i)
-    !       enddo
-    !       write(*,*) "First 10 values of C vector"
-    !       do i=1, min(10, B%nnz)
-    !          write(*,*) B%C(i)
-    !       enddo
+     write(*,*) "N=", B%n
+           write(*,*) "nnz=", B%nnz
+           write(*,*) "First 10 values of R:"
+           do i =1, min(13, B%n+1)
+              write(*,*) B%R(i)
+           enddo
+           write(*,*) "First 10 values of C vector"
+           do i=1, min(10, B%nnz)
+              write(*,*) B%C(i)
+           enddo
+    endif
 
     ! dimension check
     if (A%n /= B%n) stop
