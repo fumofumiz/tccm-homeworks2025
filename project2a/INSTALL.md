@@ -1,6 +1,8 @@
 REQUIREMENTS
 
-To compile the program correctly the library BLAS is required.
+To compile the program correctly the library BLAS is required. On CINECA it is sufficient to use the following command
+
+module load netlib-lapack/3.9.1--gcc--10.2.0
 
 INSTALLATION 
 
