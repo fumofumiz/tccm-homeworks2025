@@ -19,6 +19,7 @@ program main
     call read_sparse_matrix(trim(fileA), A)
     call read_sparse_matrix(trim(fileB), B)
 
+    !
     !check matrix A
     write(*,*) "N=", A%n
            write(*,*) "nnz=", A%nnz
@@ -51,6 +52,8 @@ program main
     ! allocate resulting matrix
     allocate(Cdense(n,n))
 
+    write(*,*)
+    write(*,*) '------------------ Sparse matrix multiplication ------------------'
     !multiplication
     n_mul = 0
     call multiply_sparse(A, B, Cdense, n_mul)
@@ -92,9 +95,11 @@ program main
     enddo 
 
     write(*,*) 
-    write(*,*) '------------------ Multiplication with library ------------------'
+    write(*,*) '------------------ Multiplication with DGEMM ------------------'
 
-    Cdense=matmul(Ad,Bd)
+    Cdense=0.d0
+
+   call dgemm('N','N',n,n,n,1.d0,Ad,n,Bd,n,0.d0,Cdense,n)
 
     write(*,*) "Resulting matrix"
     do i = 1, n
