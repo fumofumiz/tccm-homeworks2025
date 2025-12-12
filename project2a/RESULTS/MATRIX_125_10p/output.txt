@@ -1,0 +1,14 @@
+ Insert name file matrix A
+ Insert name file matrix B
+ Insert number of loops to check time
+
+ ------------------ Sparse matrix multiplication ------------------
+ Time for sparse multiplication  0.85663500000000004     
+ number of multiplications
+       22822
+
+ ------------------ Conversion to dense format and manual multiplication ------------------
+ Time for manual multiplication  0.86054999999999982     
+
+ ------------------ Multiplication with DGEMM ------------------
+ Time for multiplication using DGEMM  0.11475100000000005     
