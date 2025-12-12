@@ -36,12 +36,9 @@
                read(10, *, iostat=ios) A%R
                if (ios /= 0) stop "Error reading R"
 
-                 !determine nnz, the largest value of R is nnz
-                 maxR=0 
-                 do i=1, A%n+1
-                    if (A%R(i) .gt. maxR) maxR = A%R(i)
-                 enddo
-                 A%nnz= maxR-1 !considering the last row value (nnz +1) 
+                 !determine nnz, the largest value of R is nnz 
+                A%nnz = A%R(A%n+1)  !CAUTION
+
 
                 !allocate C and read C
                 allocate(A%C(A%nnz))
@@ -83,23 +80,18 @@
          Cdense = 0.0d0
          n_mul=0
 
-         ! for the multiplication, we consider the simmetry of the matrix B 
+         ! for the multiplication, we consider the symmetry of the matrix B 
          ! (rows = columns)
 
-         !since the columns in the same row are increasing in number, 
-         !if the column value of A is less than the column value of B, stop the program,
-         !otherwise, if the value of the two columns is the same, do the multiplication
+         !if the value of the two columns is the same, do the multiplication
 
          ! multiplication
          do j = 1, n        !rows of B
             do i = 1, n    !rows of A
                y = 0.0d0    !parameter that contains the multiplication result
 
-            do pA = A%R(i), A%R(i+1)-1   !vector R of A
-                do pB = B%R(j), B%R(j+1)-1    ! vector R of B
-                  !  if (A%C(pA) .lt. B%C(pB)) then
-                   !    exit
-                   ! end if
+            do pA = A%R(i)+1, A%R(i+1)   !number of nnz per row of A
+                do pB = B%R(j)+1, B%R(j+1)    !number of nnz per row of B 
                     if (A%C(pA) == B%C(pB)) then
                         y = y + A%V(pA) * B%V(pB)
                         n_mul= n_mul + 1 
