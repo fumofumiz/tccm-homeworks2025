@@ -2,20 +2,49 @@
 
 @mainpage
 
-Computes a matrix–matrix product with symmetric sparse matrices.
+This program computes a matrix–matrix product with symmetric sparse matrices.
 
 ---
 
-## Description
+## (TODO) Description
 
-This Fortran program loads two sparse matrices and multiplies them using different
+This Fortran program loads two sparse matrices in CSR format and multiplies them using different
 methods:
 
-- **`n`**
-**`n`**
+- **`1`** Multiplication with a sparse matrix adapted algorithm.
 
-and reports performance metrics,
-scaling behavior, and fill-in of the resulting matrix.
+- **`2`** Standard matrix-matrix multiplication. 
+
+- **`3`** Standard matrix-matrix multiplication with the BLAS subroutine dgemm.
+
+For each one the 
+
+---
+
+## (TODO) Instructions for use
+
+In order to run the program you need
+
+ -**`1`** Two matrices in CRS format.
+
+The input file is structured as follows
+
+filename_matrix_A       :: character
+filename_matrix_B       :: character
+n                       :: integer
+n                       :: integer (optional), default 0, if different from 0 the matrices are printed
+
+To run the program then use the command
+
+sparse < input 
+
+if you wish to print the output in a file
+
+sparse < input > output
+
+The output is structured as the following
+
+
 
 ---
 
@@ -163,7 +192,7 @@ This subroutine multiplies two matrices of dimension (N,N). The multiplication i
 
 ---
 
-### Algorithm Description
+### Sparse Multiplication Algorithm Description
 
 The subroutine first checks whether the two input matrices have the same
 dimension. The output matrix `Cdense` and the multiplication counter `n_mul`
@@ -177,6 +206,6 @@ multiplication increments the counter `n_mul`.
 Finally, the accumulated value `y` is stored in the dense result matrix
 `Cdense`.
 
---- 
 
-###
+
+ 
