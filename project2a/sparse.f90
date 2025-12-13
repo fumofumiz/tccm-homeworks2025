@@ -4,7 +4,8 @@ program main
 
     type(sparse_matrix) :: A, B
     real*8, allocatable :: Cdense(:,:),Ad(:,:),Bd(:,:)
-    integer :: n_mul, num_loop,debug 
+    integer :: n_mul, num_loop
+    character(len=1) :: debug 
     character(len=200) :: fileA, fileB
     integer :: n, i
     real*8 :: t_start, t_end
@@ -34,7 +35,7 @@ program main
     call read_sparse_matrix(trim(fileA), A)
     call read_sparse_matrix(trim(fileB), B)
 
-    if (debug.ne.0) then 
+    if (debug.eq.'y') then 
     !check matrix A
      write(*,*) "N=", A%n
            write(*,*) "nnz=", A%nnz
@@ -84,7 +85,7 @@ program main
 
     !check result
 
-    if (debug.ne.0) then
+    if (debug.eq.'y') then
      write(*,*) "Resulting matrix"
      do i = 1, n
         write(*,'(*(F12.6,1X))') Cdense(i,:)
@@ -103,7 +104,7 @@ program main
     call sparse_to_dense(B,Bd,n)
 
     !check conversion sparse-dense
-    if (debug.ne.0) then
+    if (debug.eq.'y') then
     write(*,*) 'Dense A matrix' 
     do i=1,n
         write(*,*) Ad(i,:)
@@ -125,7 +126,7 @@ program main
     write(*,*) 'Time for manual multiplication', t_end-t_start
 
     !check results
-    if (debug.ne.0) then
+    if (debug.eq.'y') then
     write(*,*) "Resulting matrix"
     do i = 1, n
         write(*,'(*(F12.6,1X))') Cdense(i,:)
@@ -146,7 +147,7 @@ program main
    write(*,*) 'Time for multiplication using DGEMM', t_end-t_start
 
     !check results
-    if (debug.ne.0) then
+    if (debug.eq.'y') then
     write(*,*) "Resulting matrix"
     do i = 1, n
         write(*,'(*(F12.6,1X))') Cdense(i,:)
