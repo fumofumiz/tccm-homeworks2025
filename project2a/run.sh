@@ -3,6 +3,7 @@
 MAT_DIR="Matrices"
 RES_DIR="RESULTS"
 N=100
+D="n"
 
 mkdir -p "${RES_DIR}"
 
@@ -21,6 +22,7 @@ for MAT in ${MAT_DIR}/*.sparse; do
 ${MAT}
 ${MAT}
 ${N}
+${D}
 EOF
 
     # una sola esecuzione

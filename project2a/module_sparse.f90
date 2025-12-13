@@ -102,7 +102,7 @@
             Cdense(i,j) = y
          end do
      end do
-    
+   
       end subroutine multiply_sparse
 
       subroutine sparse_to_dense(A,D,n)
@@ -118,7 +118,7 @@
            do i=1,A%n
                 rowstart=A%R(i)
                 rowend=A%R(i+1)
-                do j=rowstart,rowend-1
+                do j=rowstart+1,rowend
                   D(i,A%C(j))=A%V(j)
                 enddo
            enddo
