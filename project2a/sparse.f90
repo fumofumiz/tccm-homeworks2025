@@ -20,13 +20,13 @@ program main
     write(*,*) fileB
 
     ! num_loop of multiplication
-    write(*,*) 'Insert number of loops to check time'
+    write(*,*) 'Insert number of matrix-matrix multiplications performed'
     read(*,*) num_loop
     write(*,*) num_loop
 
     debug=0
     !ask for printing matrices or not
-    write(*,*) 'Do you want to print the matrices? 0=No, 1=Yes'
+    write(*,*) 'Do you want to print the matrices? 0=No (default), non-zero-integer=Yes'
     read(*,*) debug
     write(*,*) debug
 
@@ -83,11 +83,14 @@ program main
     write(*,*) 'Time for sparse multiplication', t_end-t_start
 
     !check result
-    ! write(*,*) "Resulting matrix"
-    ! do i = 1, n
-    !    write(*,'(*(F12.6,1X))') Cdense(i,:)
-    ! enddo
-    
+
+    if (debug.ne.0)
+     write(*,*) "Resulting matrix"
+     do i = 1, n
+        write(*,'(*(F12.6,1X))') Cdense(i,:)
+     enddo
+    endif
+
     write (*,*) 'number of multiplications'
     write(*,*) n_mul
 
@@ -100,14 +103,16 @@ program main
     call sparse_to_dense(B,Bd,n)
 
     !check conversion sparse-dense
-    !write(*,*) 'Dense A matrix' 
-    !do i=1,n
-    !    write(*,*) Ad(i,:)
-    !enddo
-    !write(*,*) 'Dense B matrix'
-    !do i=1,n
-    !    write(*,*) Bd(i,:)
-    !enddo
+    if (debug.ne.0)
+    write(*,*) 'Dense A matrix' 
+    do i=1,n
+        write(*,*) Ad(i,:)
+    enddo
+    write(*,*) 'Dense B matrix'
+    do i=1,n
+        write(*,*) Bd(i,:)
+    enddo
+    endif
     
     !calculate time spent
     call cpu_time(t_start)
@@ -120,10 +125,11 @@ program main
     write(*,*) 'Time for manual multiplication', t_end-t_start
 
     !check results
-    !write(*,*) "Resulting matrix"
-    !do i = 1, n
-    !    write(*,'(*(F12.6,1X))') Cdense(i,:)
-    !enddo 
+    if (debug.ne.0)
+    write(*,*) "Resulting matrix"
+    do i = 1, n
+        write(*,'(*(F12.6,1X))') Cdense(i,:)
+    enddo 
 
     write(*,*) 
     write(*,*) '------------------ Multiplication with DGEMM ------------------'
@@ -139,10 +145,12 @@ program main
    write(*,*) 'Time for multiplication using DGEMM', t_end-t_start
 
     !check results
-    !write(*,*) "Resulting matrix"
-    !do i = 1, n
-    !    write(*,'(*(F12.6,1X))') Cdense(i,:)
-    !enddo
+    if (debug.ne.0)
+    write(*,*) "Resulting matrix"
+    do i = 1, n
+        write(*,'(*(F12.6,1X))') Cdense(i,:)
+    enddo
+    endif
 
  deallocate(Cdense)
 
