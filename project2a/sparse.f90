@@ -4,7 +4,8 @@ program main
 
     type(sparse_matrix) :: A, B
     real*8, allocatable :: Cdense(:,:),Ad(:,:),Bd(:,:)
-    integer :: n_mul, num_loop,debug 
+    integer :: n_mul, num_loop
+    character(len=2) :: debug 
     character(len=200) :: fileA, fileB
     integer :: n, i
     real*8 :: t_start, t_end
@@ -12,29 +13,37 @@ program main
     !ask for matrix A name
     write(*,*) "Insert name file matrix A"
     read(*,'(A)') fileA
-    write(*,*) fileA
+    write(*,*) 
+    write(*,*) 'chosen option:',fileA
 
     !ask for matrix B name
     write(*,*) "Insert name file matrix B"
     read(*,'(A)') fileB
-    write(*,*) fileB
+    write(*,*) 
+    write(*,*) 'chosen option:', fileB
 
     ! num_loop of multiplication
-    write(*,*) 'Insert number of loops to check time'
+    write(*,*) 'Insert number of matrix-matrix multiplications performed'
     read(*,*) num_loop
-    write(*,*) num_loop
+    write(*,*)
+    write(*,*) 'chosen option:', num_loop
 
-    debug=0
     !ask for printing matrices or not
-    write(*,*) 'Do you want to print the matrices? 0=No, 1=Yes'
-    read(*,*) debug
-    write(*,*) debug
+    write(*,*) 'Do you want to print the matrices? y/n (default is n)'
+    read(*,'(A)') debug
+    if (len_trim(debug) == 0) then
+    write(*,*)
+    print *, "no value entered"
+    else
+    write(*,*)
+    write(*,*) 'chosen option:',debug
+    end if
 
     ! read the files from subroutine
     call read_sparse_matrix(trim(fileA), A)
     call read_sparse_matrix(trim(fileB), B)
 
-    if (debug.ne.0) 
+    if (debug.eq.'y') then 
     !check matrix A
      write(*,*) "N=", A%n
            write(*,*) "nnz=", A%nnz
@@ -83,12 +92,15 @@ program main
     write(*,*) 'Time for sparse multiplication', t_end-t_start
 
     !check result
-    ! write(*,*) "Resulting matrix"
-    ! do i = 1, n
-    !    write(*,'(*(F12.6,1X))') Cdense(i,:)
-    ! enddo
-    
-    write (*,*) 'number of multiplications'
+
+    if (debug.eq.'y') then
+     write(*,*) "Resulting matrix"
+     do i = 1, n
+        write(*,'(*(F12.6,1X))') Cdense(i,:)
+     enddo
+    endif
+
+    write (*,*) 'Number of scalar multiplications'
     write(*,*) n_mul
 
     write(*,*)
@@ -100,14 +112,16 @@ program main
     call sparse_to_dense(B,Bd,n)
 
     !check conversion sparse-dense
-    !write(*,*) 'Dense A matrix' 
-    !do i=1,n
-    !    write(*,*) Ad(i,:)
-    !enddo
-    !write(*,*) 'Dense B matrix'
-    !do i=1,n
-    !    write(*,*) Bd(i,:)
-    !enddo
+    if (debug.eq.'y') then
+    write(*,*) 'Dense A matrix' 
+    do i=1,n
+        write(*,*) Ad(i,:)
+    enddo
+    write(*,*) 'Dense B matrix'
+    do i=1,n
+        write(*,*) Bd(i,:)
+    enddo
+    endif
     
     !calculate time spent
     call cpu_time(t_start)
@@ -120,10 +134,12 @@ program main
     write(*,*) 'Time for manual multiplication', t_end-t_start
 
     !check results
-    !write(*,*) "Resulting matrix"
-    !do i = 1, n
-    !    write(*,'(*(F12.6,1X))') Cdense(i,:)
-    !enddo 
+    if (debug.eq.'y') then
+    write(*,*) "Resulting matrix"
+    do i = 1, n
+        write(*,'(*(F12.6,1X))') Cdense(i,:)
+    enddo 
+    endif
 
     write(*,*) 
     write(*,*) '------------------ Multiplication with DGEMM ------------------'
@@ -139,10 +155,12 @@ program main
    write(*,*) 'Time for multiplication using DGEMM', t_end-t_start
 
     !check results
-    !write(*,*) "Resulting matrix"
-    !do i = 1, n
-    !    write(*,'(*(F12.6,1X))') Cdense(i,:)
-    !enddo
+    if (debug.eq.'y') then
+    write(*,*) "Resulting matrix"
+    do i = 1, n
+        write(*,'(*(F12.6,1X))') Cdense(i,:)
+    enddo
+    endif
 
  deallocate(Cdense)
 

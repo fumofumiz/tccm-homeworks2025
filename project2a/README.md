@@ -30,9 +30,8 @@ The input file is structured as follows
 
 filename_matrix_A       :: character
 filename_matrix_B       :: character
-n                       :: integer
-n                       :: integer (optional), default 0, if different from 0 the matrices are printed
 num_loop                :: integer
+debug                   :: character, default is 'n', if 'y' the matrices are printed
 
 To run the program then use the command
 
@@ -46,19 +45,19 @@ If you run the program using the command
 
 ./sparse
 
-The terminal prints on the screen the instructions for the required input.
+the terminal prints on the screen the instructions for the required input.
 It first asks to insert the path of the two files containing the sparse matrices
-To multiply. 
+to multiply. 
 Then, it asks for the number of repetitions of the multiplication, 
 in order to obtain a measurable execution time (num_loop).
 Finally, it asks whether the user wants to print the sparse matrix to the screen
-For debugging purposes.
+for debugging purposes.
 
 For each of the three multiplication methods previously described, 
-The main outputs are:
-
-- The execution time of the multiplication  
-- The number of scalar multiplications performed to compute the resulting matrix
+the default output is the execution time of the multiplication. In the case of sparse 
+the number of scalar multiplications performed to compute the resulting matrix is printed.
+In the standard matrix-matrix multiplication algorithm the number 
+of scalar multiplications performed is N
 
 ---
 
