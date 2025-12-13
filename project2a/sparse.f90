@@ -5,7 +5,7 @@ program main
     type(sparse_matrix) :: A, B
     real*8, allocatable :: Cdense(:,:),Ad(:,:),Bd(:,:)
     integer :: n_mul, num_loop
-    character(len=1) :: debug 
+    character(len=2) :: debug 
     character(len=200) :: fileA, fileB
     integer :: n, i
     real*8 :: t_start, t_end
@@ -13,23 +13,31 @@ program main
     !ask for matrix A name
     write(*,*) "Insert name file matrix A"
     read(*,'(A)') fileA
-    write(*,*) fileA
+    write(*,*) 
+    write(*,*) 'chosen option:',fileA
 
     !ask for matrix B name
     write(*,*) "Insert name file matrix B"
     read(*,'(A)') fileB
-    write(*,*) fileB
+    write(*,*) 
+    write(*,*) 'chosen option:', fileB
 
     ! num_loop of multiplication
     write(*,*) 'Insert number of matrix-matrix multiplications performed'
     read(*,*) num_loop
-    write(*,*) num_loop
+    write(*,*)
+    write(*,*) 'chosen option:', num_loop
 
-    debug=0
     !ask for printing matrices or not
-    write(*,*) 'Do you want to print the matrices? 0=No (default), non-zero-integer=Yes'
-    read(*,*) debug
-    write(*,*) debug
+    write(*,*) 'Do you want to print the matrices? y/n (default is n)'
+    read(*,'(A)') debug
+    if (len_trim(debug) == 0) then
+    write(*,*)
+    print *, "no value entered"
+    else
+    write(*,*)
+    write(*,*) 'chosen option:',debug
+    end if
 
     ! read the files from subroutine
     call read_sparse_matrix(trim(fileA), A)
@@ -92,7 +100,7 @@ program main
      enddo
     endif
 
-    write (*,*) 'number of multiplications'
+    write (*,*) 'Number of scalar multiplications'
     write(*,*) n_mul
 
     write(*,*)
