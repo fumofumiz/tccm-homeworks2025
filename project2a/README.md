@@ -17,7 +17,6 @@ methods:
 
 - **`3`** Standard matrix-matrix multiplication with the BLAS subroutine dgemm.
 
-For each one the 
 
 ---
 
@@ -33,6 +32,7 @@ filename_matrix_A       :: character
 filename_matrix_B       :: character
 n                       :: integer
 n                       :: integer (optional), default 0, if different from 0 the matrices are printed
+num_loop                :: integer
 
 To run the program then use the command
 
@@ -42,9 +42,23 @@ if you wish to print the output in a file
 
 sparse < input > output
 
-The output is structured as the following
+If you run the program using the command
 
+./sparse
 
+The terminal prints on the screen the instructions for the required input.
+It first asks to insert the path of the two files containing the sparse matrices
+To multiply. 
+Then, it asks for the number of repetitions of the multiplication, 
+in order to obtain a measurable execution time (num_loop).
+Finally, it asks whether the user wants to print the sparse matrix to the screen
+For debugging purposes.
+
+For each of the three multiplication methods previously described, 
+The main outputs are:
+
+- The execution time of the multiplication  
+- The number of scalar multiplications performed to compute the resulting matrix
 
 ---
 
@@ -60,7 +74,7 @@ routines for handling sparse matrices.
 ### Derived Type: `sparse_matrix`
 
 The `sparse_matrix` type describes a matrix stored in sparse format and consists
-of the following components:
+of the following components, in order:
 
 - **`n`**  
   Integer specifying the dimension of the matrix.
@@ -81,7 +95,7 @@ of the following components:
 
 ---
 
-### Subroutine `read_sparse_matrix`
+### Subroutine `read_sparse_matrix`(filename, A)
 
 This subroutine reads a sparse matrix from an input file and stores it in a
 `sparse_matrix` data structure.
@@ -103,7 +117,7 @@ This subroutine reads a sparse matrix from an input file and stores it in a
 
 ---
 
-### Subroutine `multiply_sparse`
+### Subroutine `multiply_sparse`(A ,B ,Cdense ,n_mul)
 
 This subroutine multiplies two symmetric matrices of the same dimension, stored
 in sparse format, and stores the result in a dense matrix. The multiplication
@@ -140,6 +154,21 @@ counts the total number of scalar multiplications performed.
 - **`y`**  
   Double-precision variable that accumulates the result of the inner
   multiplication loop for a single entry of the output matrix.
+
+#### Sparse Multiplication Algorithm Description
+
+The subroutine first checks whether the two input matrices have the same
+dimension. The output matrix `Cdense` and the multiplication counter `n_mul`
+are then initialized to zero.
+
+For each pair of rows of matrices `A` and `B`, the algorithm scans their
+non-zero elements. Whenever matching column indices are found, the
+corresponding values are multiplied and accumulated in the variable `y`. Each
+multiplication increments the counter `n_mul`.
+
+Finally, the accumulated value `y` is stored in the dense result matrix
+`Cdense`.
+
 
 ---
 
@@ -192,19 +221,6 @@ This subroutine multiplies two matrices of dimension (N,N). The multiplication i
 
 ---
 
-### Sparse Multiplication Algorithm Description
-
-The subroutine first checks whether the two input matrices have the same
-dimension. The output matrix `Cdense` and the multiplication counter `n_mul`
-are then initialized to zero.
-
-For each pair of rows of matrices `A` and `B`, the algorithm scans their
-non-zero elements. Whenever matching column indices are found, the
-corresponding values are multiplied and accumulated in the variable `y`. Each
-multiplication increments the counter `n_mul`.
-
-Finally, the accumulated value `y` is stored in the dense result matrix
-`Cdense`.
 
 
 
