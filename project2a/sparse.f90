@@ -130,6 +130,7 @@ program main
     do i = 1, n
         write(*,'(*(F12.6,1X))') Cdense(i,:)
     enddo 
+    endif
 
     write(*,*) 
     write(*,*) '------------------ Multiplication with DGEMM ------------------'
