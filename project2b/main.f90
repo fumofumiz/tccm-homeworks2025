@@ -63,6 +63,7 @@ program main
            b=c           
            niter=niter+1
            if (niter.gt.nmax) then
+                write(*,*) 'Convergence not reached'
                 exit
            endif
         enddo
@@ -128,6 +129,7 @@ program main
 
            niter=niter+1
            if (niter.gt.nmax) then
+                write(*,*) 'Convergence not reached'
                 exit
            endif
 
@@ -175,6 +177,7 @@ program main
            b=c
            niter=niter+1
            if (niter.gt.nmax) then
+                write(*,*) 'Convergence not reached'
                 exit
            endif
         enddo
