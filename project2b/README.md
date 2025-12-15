@@ -1,3 +1,43 @@
+# POWER METHOD
+
+## DESCRIPTION
+The program computes the first eigenvalue of a symmetric matrix using the power method. This is done using three implementations:
+
+- **1.** CPU version, using FORTRAN functions `matmul` and `dot_product`.
+- **2.** GPU version, using OpenMP to accelerate matrix-vector multiplication.
+- **3.** CPU version, using the non parallelized GPU code.
+
+The execution time is computed each time and printed in the output. The objective is to compare the execution time on GPU and CPU.
+
+The symmetric matrix is filled as follows
+
+do i=1,n-1
+   j=i+1
+   a(i,j) = 1.0d0
+   a(j,i) = 1.0d0
+enddo.
+
+The dimension **n** is given by input.
+
+DISCLAIMER: The program is specifically thought to be run on CINECA G100 machine. It could be run probably on other systems with some slight modifications in the compilation and usage phase.
+
+## INSTRUCTIONS FOR USE
+
+Once the program is installed (see INSTALL.md) an input file is needed. The input file should be named 'input' and have the following structure
+
+integer :: n, Dimension of the matrix a(n,n)
+real :: eps, Convergence threshold
+integer :: nmax, Maximum number of iterations of the power method
+
+For example given the input file
+
+---
+
+25000
+0.001
+100
+
+---
 
 the program will compute the first eigenvalue of a (25000,25000) matrix using a convergence threshold of 0.001 with a maximum number of iterations of 100. The previous input can be found in the results directory and is called input_25k.
 
@@ -21,15 +61,21 @@ The previous input example should give as output the following
           100
 
  ------------------- CPU ONLY FORTRAN FUNCTIONS ---------------------
+
  lambda    1.962707695494011
+
  execution time cpu    59.26391196250916
 
  ------------------- GPU ---------------------
+
  lambda    1.962707695494017
+
  execution time gpu    2.916820049285889
 
  ------------------- CPU ONLY EXPLICIT FUNCTION ---------------------
+
  lambda    1.962707695494009
+
  execution time cpu    595.1535840034485
 
 ---
