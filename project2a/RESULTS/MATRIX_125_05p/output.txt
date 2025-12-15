@@ -1,14 +1,23 @@
  Insert name file matrix A
+
+ chosen option:Matrices/MATRIX_125_05p.sparse                                                                                                                                                                          
  Insert name file matrix B
- Insert number of loops to check time
+
+ chosen option:Matrices/MATRIX_125_05p.sparse                                                                                                                                                                          
+ Insert number of matrix-matrix multiplications performed
+
+ chosen option:         100
+ Do you want to print the matrices? y/n (default is n)
+
+ chosen option:n 
 
  ------------------ Sparse matrix multiplication ------------------
- Time for sparse multiplication  0.25480699999999995     
- number of multiplications
+ Time for sparse multiplication  0.25663100000000000     
+ Number of scalar multiplications
         5909
 
  ------------------ Conversion to dense format and manual multiplication ------------------
- Time for manual multiplication  0.86124400000000001     
+ Time for manual multiplication  0.77233699999999994     
 
  ------------------ Multiplication with DGEMM ------------------
- Time for multiplication using DGEMM  0.11539600000000005     
+ Time for multiplication using DGEMM  0.11653200000000008     
