@@ -12,9 +12,13 @@ The execution time is computed each time and printed in the output. The objectiv
 The symmetric matrix is filled as follows
 
 do i=1,n-1
+
    j=i+1
+
    a(i,j) = 1.0d0
+
    a(j,i) = 1.0d0
+
 enddo.
 
 The dimension **n** is given by input.
@@ -26,7 +30,9 @@ DISCLAIMER: The program is specifically thought to be run on CINECA G100 machine
 Once the program is installed (see INSTALL.md) an input file is needed. The input file should be named 'input' and have the following structure
 
 integer :: n, Dimension of the matrix a(n,n)
+
 real :: eps, Convergence threshold
+
 integer :: nmax, Maximum number of iterations of the power method
 
 For example given the input file
