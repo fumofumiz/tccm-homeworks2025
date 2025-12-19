@@ -42,8 +42,8 @@ For example given the input file
 ---
 
 25000
-0.001
-100
+0.01
+10000
 
 ---
 

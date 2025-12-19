@@ -2,19 +2,22 @@
          1000
  
  convergence threshold
-   1.0000000000000000E-003
+   1.0000000000000000E-002
  
  maximum number of iterations
-          100
+        10000
  
  ------------------- CPU ONLY FORTRAN FUNCTIONS ---------------------
- lambda    1.961338505011210     
- execution time cpu   4.1203022003173828E-002
+ Total iterations         1846
+ lambda    1.989977302768848     
+ execution time cpu   0.7571330070495605     
  
  ------------------- GPU ---------------------
- lambda    1.961338505011212     
- execution time gpu   0.1977031230926514     
+ Total iterations         1846
+ lambda    1.989977302768848     
+ execution time gpu   0.7561669349670410     
  
  ------------------- CPU ONLY EXPLICIT FUNCTION ---------------------
- lambda    1.961338505011205     
- execution time cpu   0.4846129417419434     
+ Total iterations          1846
+ lambda    1.989977302768848     
+ execution time cpu    6.216899156570435     

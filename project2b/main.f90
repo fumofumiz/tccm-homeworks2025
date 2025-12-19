@@ -57,20 +57,29 @@ program main
         error=1
         tcpustart=omp_get_wtime()
         do while(error.gt.eps)
+
            c=matmul(a,b)
-           c=c/dsqrt(dot_product(c,b))
+
+           c=c/dsqrt(dot_product(c,c))
+
            error=dot_product(c-b,c-b)
+
+           !write(*,*) error
+
            b=c           
-           niter=niter+1
+
+           niter = niter +1
            if (niter.gt.nmax) then
                 write(*,*) 'Convergence not reached'
                 exit
            endif
+
         enddo
         tcpuend=omp_get_wtime()
         lambda = 0.d0
         lambda = dot_product(b,matmul(a,b))/dot_product(b,b) 
         
+        write(*,*) 'Total iterations', niter
         write(*,*) 'lambda', lambda
         write(*,*) 'execution time cpu', tcpuend-tcpustart
         
@@ -85,7 +94,7 @@ program main
         niter=0
         error=1
         tgpustart=omp_get_wtime()
-        !$omp target data map(a,b,c,dd,error,rootdd)
+        !$omp target data map(a,b,c)
         do while(error.gt.eps)
 
            !$omp target teams distribute parallel do
@@ -107,9 +116,9 @@ program main
             dd=dd+c(k)*c(k)
            enddo
 
-           !$omp target update from(dd)
+           !write(*,*) dd
+
            rootdd=dsqrt(dd)
-           !$omp target update to(dd)
 
            !$omp target teams distribute parallel do 
            do k = 1,n
@@ -118,16 +127,17 @@ program main
           
            !$omp target teams distribute parallel do reduction(+:error)
            do k = 1,n
-            error = error + (c(k)-b(k))**2
+            error = error + (c(k)-b(k))*(c(k)-b(k))
            enddo
-           !$omp target update from(error)
+
+           !write(*,*) error
 
            !$omp target teams distribute parallel do
            do k = 1,n
             b(k) = c(k)
            enddo
 
-           niter=niter+1
+           niter = niter +1
            if (niter.gt.nmax) then
                 write(*,*) 'Convergence not reached'
                 exit
@@ -143,6 +153,7 @@ program main
         lambda = 0.d0
         lambda = dot_product(b,matmul(a,b))/dot_product(b,b)
 
+        write(*,*) 'Total iterations', niter
         write(*,*) 'lambda', lambda
         write(*,*) 'execution time gpu', tgpuend-tgpustart
          
@@ -159,30 +170,43 @@ program main
         error=1
         tcpustart=omp_get_wtime()
         do while (error.gt.eps)
+
            c=0.d0
+
            dd=0.d0
+
            error=0.d0
+
            do k=1,n
             do l=1,n
              c(k)=c(k)+a(k,l)*b(l)
             enddo
            enddo
+
            do k=1,n
            dd=dd+c(k)*c(k)
            enddo
+
            c=c/dsqrt(dd)
+
            do k=1,n
-            error=error+(c(k)-b(k))**2
+            error=error+(c(k)-b(k))*(c(k)-b(k))
            enddo
+
+           !write(*,*) error
+
            b=c
-           niter=niter+1
+
+           niter = niter +1
            if (niter.gt.nmax) then
                 write(*,*) 'Convergence not reached'
                 exit
            endif
+
         enddo
         tcpuend=omp_get_wtime()
 
+        write(*,*) 'Total iterations ', niter
         lambda = 0.d0
         lambda = dot_product(b,matmul(a,b))/dot_product(b,b)
 
