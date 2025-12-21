@@ -182,6 +182,68 @@ marks the end of the target data region.
 
 A second CPU implementation uses the same algorithm for the GPU but without parallelization.
 
-###
-~
-~
+## FURTHER INFORMATION
+
+### SLURM Submission Script `submit.sh`
+
+output file: multiGPUJob.out
+
+error file: multiGPUJob.err
+
+The Job is charged to the project account: tra25_tccm.
+
+The scripts executed the program using:
+srun ./main < input > output
+
+### Directory  `results/`
+
+The directory contains the input files, the corresponding program outputs, and a summary spreadsheet.
+
+#### INPUT FILES
+
+These contain predefined parameters for different matrix sizes:
+
+- input_1k
+
+- input_2p5k
+
+- input_5k
+
+- input_10k
+
+- input_25k
+
+Each file specifies:
+
+- matrix dimension
+
+- convergence threshold
+
+- maximum number of iterations
+
+#### OUTPUT FILES
+
+For each input file, the corresponding program output is stored:
+
+- output_1k
+
+- output_2p5k
+
+- output_5k
+
+- output_10k
+
+- output_25k
+
+These outputs include:
+
+- Computed eigenvalue
+
+- Execution times
+
+#### PLOT AND SUMMARY
+
+- execution_time_plot.png, a plot of the ratio between CPU and GPU execution for different matrix sizes.
+
+- results_2b.xlsx, a collected table of timings and eigenvalues for all test cases.
+
