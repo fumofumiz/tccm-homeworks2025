@@ -6,7 +6,7 @@ This program computes a matrix–matrix product with symmetric sparse matrices.
 
 ---
 
-## (TODO) Description
+## Description
 
 This Fortran program loads two sparse matrices in CSR format and multiplies them using different
 methods:
@@ -20,13 +20,11 @@ methods:
 
 ---
 
-## (TODO) Instructions for use
+## Instructions for use
 
-In order to run the program you need
+After installation, in order to run the program you need two symmetric matrices in CRS format.
 
- -**`1`** Two matrices in CRS format.
-
-The input file is structured as follows
+After having obtained two of those one should make an input file. The input file is structured as follows
 
 filename_matrix_A       :: character
 filename_matrix_B       :: character
@@ -57,7 +55,7 @@ For each of the three multiplication methods previously described,
 the default output is the execution time of the multiplication. In the case of sparse 
 the number of scalar multiplications performed to compute the resulting matrix is printed.
 In the standard matrix-matrix multiplication algorithm the number 
-of scalar multiplications performed is N
+of scalar multiplications performed is N^3 where N is the matrix (and vector) dimension.
 
 ---
 
