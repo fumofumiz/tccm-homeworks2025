@@ -42,7 +42,9 @@ For example given the input file
 ---
 
 25000
+
 0.01
+
 10000
 
 ---
@@ -60,37 +62,47 @@ The previous input example should give as output the following
 ---
 
  dimension of the matrix
+
         25000
 
  convergence threshold
+
    1.0000000000000000E-003
 
  maximum number of iterations
-          100
+
+          10000
 
  ------------------- CPU ONLY FORTRAN FUNCTIONS ---------------------
 
- lambda    1.962707695494011
+ Total iterations         1655
 
- execution time cpu    59.26391196250916
+ lambda    1.990002984583955
+
+ execution time cpu    1047.822283983231
 
  ------------------- GPU ---------------------
 
- lambda    1.962707695494017
+ Total iterations         1655
 
- execution time gpu    2.916820049285889
+ lambda    1.990002984583956
+
+ execution time gpu    14.30522894859314
 
  ------------------- CPU ONLY EXPLICIT FUNCTION ---------------------
 
- lambda    1.962707695494009
+ Total iterations          1655
 
- execution time cpu    595.1535840034485
+ lambda    1.990002984583955
+
+ execution time cpu    10528.55516719818
 
 ---
 
-This output can be found in the results directory with the name 'output_25k'.
+This output can be found in the results directory with the name 'output_25k'. Since the staring vector is generated 
+randomly the results could differ slightly, especially the execution times obtained. 
 
-## POWER METHOD ALGORITHM
+## POWER METHOD ALGORITHM AND IMPLEMENTATION
 
 The power method algorithm starts with a random b normalized vector and a (n,n)
 symmetric matrix A then a while loop does the following
@@ -123,10 +135,11 @@ method algorithm is implemented as follows.
 
 First a target data region is created using the command
 
-!$omp target data map(A,b,c,dd,error,rootdd)
+!$omp target data map(A,b,c)
 
 this ensures that the there are no unnecessary data transfers between the GPU
-and the CPU.
+and the CPU. Specifically the matrix A which is used in each iteration to compute c=Ab
+and the vectors b and c which are updated at each iteration
 
 Inside the target data region a while do loop does the following
 
@@ -136,24 +149,17 @@ Inside the target data region a while do loop does the following
 
 3. computation of the vector squared norm using a reduction on the GPU
 
-4. the squared norm is transfered to the CPU
+4. the CPU computes the norm from it's square using the dsqrt fortran function
 
-5. the CPU computes the norm from it's square using the dsqrt fortran function
+5. normalization of c on the GPU
 
-6. the norm is then transfered to GPU
+6. computation of the error ||c-b||**2 using a parallel reduction on the GPU
 
-7. normalization of c on the GPU
+7. update of vector b on the GPU
 
-8. computation of the error ||c-b||**2 using a parallel reduction on the GPU
+8. On the CPU the condition (number of iterations > maximum allowed number) is tested if the result is negative the condition (error < threshold) is tested if this is also negative the loops goes to 1. If any of the results is positive the loop stop.
 
-9. transfer of the error value to the CPU
-
-10. update of vector b on the GPU
-
-11. On the CPU the condition (number of iterations > maximum allowed number) is tested ifthe result is negative the condition (error < threshold) is tested if this is also negative the loops goes to 1. If any of the results is positive the loop stop.
-
-
-Each of the operations executed on the GPU is done by explicit (nested if necessary) do loops.
+Each of the operations executed on the GPU is done by explicit do loops.
 To distribute the workload of a do loop on the GPU the following command is used
 
 !$omp target teams distribute parallel do
@@ -165,8 +171,6 @@ If a reduction after the do loop is needed, the command
 is used instead. The keyword reduction(+:) ensures that the reduction
 will be done by summing up the stored values on each thread. This is
 specifically the case of the dot product.
-
-The error and the norm are transfered to the CPU because respectevily the condition is tested on it and the dsqrt function doesn't work on the GPU.
 
 After the while loop the line
 

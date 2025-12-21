@@ -1,3 +1,4 @@
+#RESULTS AND DISCUSSION
 
 
 | dimension | CPU fortran | GPU    | CPU non parallel | CPUexp/GPU time | CPUloop/GPU time | Lambda |
