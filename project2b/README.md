@@ -1,6 +1,6 @@
-# POWER METHOD
+# Power method
 
-## DESCRIPTION
+## Description
 The program computes the first eigenvalue of a symmetric matrix using the power method. This is done using three implementations:
 
 - **1.** CPU version, using FORTRAN functions `matmul` and `dot_product`.
@@ -27,7 +27,7 @@ The dimension **n** is given by input.
 
 DISCLAIMER: The program is specifically thought to be run on CINECA G100 machine. It could be run probably on other systems with some slight modifications in the compilation and usage phase.
 
-## INSTRUCTIONS FOR USE
+## Instructions for use
 
 Once the program is installed (see INSTALL.md) an input file is needed. The input file should be named 'input' and have the following structure
 
@@ -37,7 +37,8 @@ real :: eps, Convergence threshold
 
 integer :: nmax, Maximum number of iterations of the power method
 
-For example given the input file
+
+The input parameters should not be separated by any blank line. For example given the input file
 
 ---
 
@@ -63,7 +64,7 @@ The previous input example should give as output the following
 
  dimension of the matrix
 
-        25000
+25000
 
  convergence threshold
 
@@ -71,7 +72,7 @@ The previous input example should give as output the following
 
  maximum number of iterations
 
-          10000
+ 10000
 
  ------------------- CPU ONLY FORTRAN FUNCTIONS ---------------------
 
@@ -97,12 +98,10 @@ The previous input example should give as output the following
 
  execution time cpu    10528.55516719818
 
----
+This output can be found in the `results/` directory with the name `output_25k`. Since the staring vector is generated 
+randomly the results could differ slightly, especially the execution times.
 
-This output can be found in the results directory with the name 'output_25k'. Since the staring vector is generated 
-randomly the results could differ slightly, especially the execution times obtained. 
-
-## POWER METHOD ALGORITHM AND IMPLEMENTATION
+## Power method algorithm and its implementation
 
 The power method algorithm starts with a random b normalized vector and a (n,n)
 symmetric matrix A then a while loop does the following
@@ -116,7 +115,7 @@ symmetric matrix A then a while loop does the following
 
 For each of the implementations the algorithm is the same.
 
-### CPU IMPLEMENTATION
+### CPU implementation
 
 The first CPU implementation uses the fortran functions
 
@@ -128,7 +127,7 @@ The first CPU implementation uses the fortran functions
 
 The power method algorithm is then implemented naively.
 
-### GPU IMPLEMENTATION
+### GPU implementation
 
 The GPU version uses OpenMP to parallelize the code. In this case the power
 method algorithm is implemented as follows.
@@ -178,36 +177,28 @@ After the while loop the line
 
 marks the end of the target data region.
 
-### EXPLICIT CPU IMPLEMENTATION
+### Explicit CPU implementation
 
 A second CPU implementation uses the same algorithm for the GPU but without parallelization.
 
-## FURTHER INFORMATION
+## Further informations
 
----
-
-### SLURM Submission Script `submit.sh`
+### Slurm submission script `submit.sh`
 
 This script is used to submit a job which executes the program on the CINECA G100 system. 
 
-Two files other than the output are created: multiGPUJob.out, multiGPUJob.err. The last one contains any error related to the
-slurm workload manager. 
+Two files, other than the output, are created: multiGPUJob.out, multiGPUJob.err. The last one contains any error related to the
+slurm workload manager. The scripts executes the program using
 
-The Job is charged to the project account: tra25_tccm.
-
-The scripts executes the program using
-
-srun ./main < input > output
+`srun ./main < input > output`
 
 The file input should be in the same directory as where the script and the executable are. The output file is created in the same directory. 
-
----
 
 ### Directory  `results/`
 
 The directory contains the input files, the corresponding program outputs, a summary excel spreadsheet, and .png plot. 
 
-#### INPUT FILES
+#### Input files
 
 These contain predefined parameters for different matrix sizes:
 
@@ -229,7 +220,7 @@ Each file specifies:
 
 - maximum number of iterations
 
-#### OUTPUT FILES
+#### Output files
 
 For each input file, the corresponding program output is stored:
 
@@ -249,7 +240,7 @@ These outputs include:
 
 - Execution times
 
-#### PLOT AND SUMMARY
+#### Plot and summary
 
 - execution_time_plot.png, a plot of the ratio between CPU and GPU execution for different matrix sizes.
 
