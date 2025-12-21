@@ -184,20 +184,28 @@ A second CPU implementation uses the same algorithm for the GPU but without para
 
 ## FURTHER INFORMATION
 
+---
+
 ### SLURM Submission Script `submit.sh`
 
-output file: multiGPUJob.out
+This script is used to submit a job which executes the program on the CINECA G100 system. 
 
-error file: multiGPUJob.err
+Two files other than the output are created: multiGPUJob.out, multiGPUJob.err. The last one contains any error related to the
+slurm workload manager. 
 
 The Job is charged to the project account: tra25_tccm.
 
-The scripts executed the program using:
+The scripts executes the program using
+
 srun ./main < input > output
+
+The file input should be in the same directory as where the script and the executable are. The output file is created in the same directory. 
+
+---
 
 ### Directory  `results/`
 
-The directory contains the input files, the corresponding program outputs, and a summary spreadsheet.
+The directory contains the input files, the corresponding program outputs, a summary excel spreadsheet, and .png plot. 
 
 #### INPUT FILES
 

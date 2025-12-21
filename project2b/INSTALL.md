@@ -12,4 +12,5 @@ nvfortran -mp=gpu -gpu=cc70 main.f90 -o main
 
 ## Test
 
-To check that the program works you can follow the instructions for use in the README.md and use the example input, you should get the example output.  
+To check that the program works you can follow the instructions for use in the README.md and use the example input, you should get the example output 
+(or a similar one). 
