@@ -1,6 +1,6 @@
 program main
          
-        !use md_module
+        use md_module
 
         implicit none
          
@@ -9,6 +9,7 @@ program main
         character(len=200) :: input_file                        ! Input file
         real*8 :: eps,sigma                                     ! Lennard-Jones parameters
         integer :: ios ! Input output error 
+        integer :: i
         real*8, allocatable :: velocity(:,3),acc(:,3) ! Dynamics arrays
         character :: debug ! Debug option
         real*8 :: dt ! Dynamics parameters: time step
@@ -38,7 +39,7 @@ program main
         Natoms = read_Natoms(input_file)
         allocate(coord(Natoms,3),mass(Natoms),distance(Natoms,Natoms))
         call read_molecule(input_file,Natoms,coord,mass)
-        distance = compute_distances(Natoms,coord,distance)
+        call compute_distances(Natoms,coord,distance)
 
         ! Checking that the input is correctly read and the distances are correct 
         if (debug.eq.'y') then

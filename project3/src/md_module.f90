@@ -4,11 +4,10 @@ module md_module
              integer function read_Natoms(input_file) result(Natoms)
               implicit none
              character(len=*), intent(in) :: input_file
-             integer :: Natoms
              integer :: ios
              !open input_file
              open(10, file=input_file, status='old', action='read', iostat=ios)
-             if (ios =/0) then
+             if (ios.ne.0) then
                      write(*,*) 'Error opening file', input_file
                      stop
              endif
@@ -30,7 +29,7 @@ module md_module
                 integer :: i, ios
 
                 open(10, file= input_file, status='old', action='read', iostat=ios)
-                if (ios =/ 0) then
+                if (ios.ne.0) then
                         write(*,*) 'Error opening file', input_file
                         stop
                 endif
