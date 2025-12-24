@@ -86,6 +86,27 @@ module md_module
       T= 0.5d0 * T
      
       end function T 
+      
+      !compute the LJ potential
+       real*8 function V(eps,sigma,Natoms,distance)
+              implicit none
+              integer,intent(in) :: Natoms
+              real*8,intent(in) :: eps,sigma
+              real*8,intent(in) :: distance(Natoms,Natoms)
+
+              integer :: i,j
+              real*8 :: rij
+
+              V=0.d0
+
+              do i=1,Natoms-1
+                 do j=i+1,Natoms
+                    rij=distance(i,j)
+                    V=V+4.d0*eps*((sigma/rij)**12-(sigma/rij)**6)
+                  enddo
+              enddo
+
+        end function V 
 
       !total energy function
       real*8 function E(T, V)
@@ -97,5 +118,35 @@ module md_module
 
       end function E 
 
+
+      !compute the acceleration
+       subroutine compute_acc(Natoms,coord,mass,distance,acc)
+              implicit none
+
+              integer,intent(in) :: Natoms
+              real*8,intent(in) :: coord(Natoms,3)
+              real*8,intent(in) :: distance(Natoms,Natoms)
+              real*8,intent(in) :: mass(Natoms)
+              real*8,intent(out) :: acc(Natoms,3)
+
+              integer :: i,j
+              real*8 :: rij,u
+
+              acc=0.d0
+
+              do i=1,Natoms
+                 do j=1,Natoms
+                    if (i.ne.j) then
+                            rij=distance(i,j)
+                            u=(24.d0*eps/rij)*((sigma/rij)**6-2.d0*(sigma/rij)**12)
+                            acc(i,1)=acc(i,1)-u*(coord(i,1)-coord(j,1))/rij
+                            acc(i,2)=acc(i,2)-u*(coord(i,2)-coord(j,2))/rij
+                            acc(i,3)=acc(i,3)-u*(coord(i,3)-coord(j,3))/rij
+                     endif
+                  enddo
+                  acc(i,:)=acc(i,:)/mass(i)
+               enddo
+
+               end subroutine compute_acc
 
 end module md_module
