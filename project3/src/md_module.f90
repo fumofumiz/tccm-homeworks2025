@@ -1,6 +1,9 @@
 module md_module
+
       implicit none
+
       contains
+
              integer function read_Natoms(input_file) result(Natoms)
               implicit none
              character(len=*), intent(in) :: input_file
@@ -40,6 +43,7 @@ module md_module
                 read(10,*) coord(i,1), coord(i,2), coord(i,3), mass(i)
                 enddo
 
+                coord = coord * 0.1d0
                 close(10)
        
         end subroutine read_molecule
@@ -120,13 +124,14 @@ module md_module
 
 
       !compute the acceleration
-       subroutine compute_acc(Natoms,coord,mass,distance,acc)
+       subroutine compute_acc(sigma,eps,Natoms,coord,mass,distance,acc)
               implicit none
 
               integer,intent(in) :: Natoms
               real*8,intent(in) :: coord(Natoms,3)
               real*8,intent(in) :: distance(Natoms,Natoms)
               real*8,intent(in) :: mass(Natoms)
+              real*8,intent(in) :: sigma,eps
               real*8,intent(out) :: acc(Natoms,3)
 
               integer :: i,j

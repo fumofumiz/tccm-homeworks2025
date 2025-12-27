@@ -4,13 +4,13 @@ program main
 
         implicit none
          
-        real*8, allocatable :: coord(:,3),mass(:),distance(:,:) ! Input coordinates, masses 
+        real*8, allocatable :: coord(:,:),mass(:),distance(:,:) ! Input coordinates, masses 
         integer :: Natoms                                       ! Input number of atoms
         character(len=200) :: input_file                        ! Input file
         real*8 :: eps,sigma                                     ! Lennard-Jones parameters
         integer :: ios ! Input output error 
-        integer :: i
-        real*8, allocatable :: velocity(:,3),acc(:,3) ! Dynamics arrays
+        integer :: i,j
+        real*8, allocatable :: velocity(:,:),acc(:,:) ! Dynamics arrays
         character :: debug ! Debug option
         real*8 :: dt ! Dynamics parameters: time step
         integer :: nsteps ! Dynamics parameters: number of steps
@@ -47,29 +47,30 @@ program main
          write(*,*) '---- Input checking ----'
          write(*,*) 'Number of atoms', Natoms
          write(*,*) 
-         write(*,*) 'Coordinates and mass'
+         write(*,*) 'Coordinates (nm) and mass'
          do i=1,Natoms
                  write(*,*) coord(i,:), mass(i)
          enddo
          write(*,*) 
-         write(*,*) 'Distance matrix'
+         write(*,*) 'Distance matrix (nm)'
          write(*,*)
          do i=1,Natoms
-                 write(*,*) d(i,:)
+                 write(*,*) distance(i,:)
          enddo
         
         endif 
 
         ! Initialize velocity and compute energies and accelerations
         allocate(velocity(Natoms,3),acc(Natoms,3))
-        v = 0.d0
+        velocity = 0.d0
         Kinetic = T(Natoms,velocity,mass)
         Potential = V(eps,sigma,Natoms,distance)
         Total = Kinetic + Potential
-        call compute_acc(Natoms,coord,mass,distance,acc)
+        call compute_acc(sigma,eps,Natoms,coord,mass,distance,acc)
 
         if (debug.eq.'y') then
 
+         write(*,*) 
          write(*,*) '---- Functions checking ----'
          write(*,*)
          write(*,*) 'Kinetic energy:', Kinetic, 'Potential energy:', Potential, 'Total energy:', Total
@@ -96,18 +97,18 @@ program main
         do i=1,Natoms
          write(1,*) 'Ar', coord(i,:)*10.d0 ! Coordinates in angstrom
         enddo 
-
+        write(1,*) 
         !---- Verlet algorithm ----
 
         do i=1,nsteps
 
-         coord = coord + v*dt + acc*((dt)**2)*0.5d0        ! Update positions
-         v = v + 0.5d0*acc*dt                              ! Update velocities step 1
-         call compute_acc(Natoms,coord,mass,distance,acc)  ! Update accelerations
-         v = v + 0.5d0*acc*dt                              ! Update velocities step 2
+         coord = coord + velocity*dt + acc*((dt)**2)*0.5d0        ! Update positions
+         velocity = velocity + 0.5d0*acc*dt                              ! Update velocities step 1
+         call compute_acc(sigma,eps,Natoms,coord,mass,distance,acc)  ! Update accelerations
+         velocity = velocity + 0.5d0*acc*dt                              ! Update velocities step 2
 
          ! Now we that we have the new positions and velocities we compute new distances, kinetic, potential and total energy. 
-         distance = compute_distances(Natoms,coord,distance)       
+         call compute_distances(Natoms,coord,distance)       
          Kinetic=T(Natoms,velocity,mass)
          Potential=V(eps,sigma,Natoms,distance)
          Total=Kinetic + Potential
@@ -115,13 +116,14 @@ program main
          ! Write new coordinates on the output file every 10 steps
          if (mod(i,10).eq.0) then
                 write(1,*) Natoms
-                write(1,*) 'Kinetic energy:', Kinetic, 'Potential energy:', Potential, 'Total energy:', Total, 'Time:', dt*i,'Conservation:' !TODO: add conservation
-                do i=1,Natoms
+                write(1,*) 'Kinetic energy:', Kinetic, 'Potential energy:', Potential, 'Total energy:', Total, 'Time:', dt*i
+!TODO: add conservation
+                do j=1,Natoms
                  write(1,*) 'Ar', coord(i,:)*10.d0 ! Coordinates in angstrom
                 enddo
 
          endif
-
+         write(1,*) 
         enddo
 
         close(1)
