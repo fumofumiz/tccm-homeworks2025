@@ -16,22 +16,50 @@ program main
         integer :: nsteps ! Dynamics parameters: number of steps
         real*8 :: Kinetic,Potential,Total ! Energies
 
-        !---- Parameters ----
+        
+        write(*,*) '---- Parameters ----'
+        write(*,*) 
 
         ! 1 Angstrom = 0.1 nm
 
         ! Lennard-Jones potential parameters
+        
+        write(*,*) 'Epsilon (kJ/mol):'
+        read(*,*) eps
+        write(*,*) eps
+        write(*,*)
 
-        eps = 0.997d0 ! kJ/mol
-        sigma = 0.3405d0 ! In nanometers, 3.405 Angstrom 
+        ! Example: eps = 0.997d0  kJ/mol
+
+        write(*,*) 'Sigma (Angstrom):'
+        read(*,*) sigma
+        write(*,*) sigma
+        write(*,*) 
+
+        sigma = sigma * 0.1d0
+
+        !sigma = 0.3405d0 in nanometers, 3.405 in Angstrom 
+
+        ! Input dynamics parameters
+
+        write(*,*) 'Time step (ps)'
+        read(*,*) dt
+        write(*,*) dt
+
+        ! Example: dt = 0.02d0    
+
+        write(*,*) 'Number of steps'
+        read(*,*) nsteps
+        write(*,*) nsteps
+        
+        ! Example: nsteps = 1000
 
         ! Debug option
-        
+
         debug='n'
-          
-        ! Input dynamics parameters
-        dt = 0.02d0                        ! In picoseconds 
-        nsteps = 1000
+        write(*,*) 'Debug? (y/n)'
+        read(*,*) debug
+        write(*,*) debug
                 
         !---- Read input and compute distances ----
 
