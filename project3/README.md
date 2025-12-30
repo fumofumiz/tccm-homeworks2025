@@ -24,7 +24,7 @@ Two parameters are needed to run the Verlet algorithm: the time step $dt$ and th
 
 Once the code has been compiled (see INSTALL.md) it is very easy to use. First create an input file named
 'inp.txt' with the following format
-
+-------
 ```
 NAtoms
 
@@ -77,6 +77,8 @@ n
 ```
 if the debug option is set to 'y' then a more verbose output file will be created containing the velocities, accelerations and distances at each step. Moreover these quantities will be printed on standard output for the initial conditions. 
 
+---
+
 ## Directory Structure
 
 ### Directory `src/`
@@ -87,5 +89,61 @@ This directory contains the source code: md.f90, md_module.f90.
 
 The main program is organized
 
-### Test
+### Test  
+
+### Module `md_module.f90`
+
+This file is a fortran module that provides the routines needed.
+
+---
+
+### Function `V(eps, sigma, Natoms, distance)`
+
+### Input arguments
+
+- **eps**  
+  Depth of the Lennard–Jones potential well.
+
+- **sigma**  
+  Distance at which the Lennard–Jones potential is zero.
+
+- **Natoms**  
+  Number of atoms in the system.
+
+- **distance**  
+  Matrix containing the interatomic distances \( r_{ij} \).
+
+### Output
+
+- **V**  
+  Scalar containing the total potential energy.
+
+
+### Subroutine `compute_acc(sigma, eps, Natoms, coord, mass, distance, acc)`
+
+### Input arguments
+
+- **sigma**  
+  Distance at which the Lennard–Jones potential is zero.
+
+- **eps**  
+  Depth of the Lennard–Jones potential well.
+
+- **Natoms**  
+  Number of atoms.
+
+- **coord**  
+  Array containing the Cartesian coordinates of the atoms.
+
+- **mass**  
+  Array containing the atomic masses.
+
+- **distance**  
+  Matrix of interatomic distances \( r_{ij} \).
+
+### Output 
+
+- **acc**  
+  Array containing the accelerations of the atoms.
+
 
