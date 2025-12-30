@@ -11,11 +11,11 @@ This program computes a matrix–matrix product with symmetric sparse matrices.
 This Fortran program loads two sparse matrices in CSR format and multiplies them using different
 methods:
 
-- **`1`** Multiplication with a sparse matrix adapted algorithm.
+- **1** Multiplication with a sparse matrix adapted algorithm.
 
-- **`2`** Standard matrix-matrix multiplication. 
+- **2** Standard matrix-matrix multiplication. 
 
-- **`3`** Standard matrix-matrix multiplication with the BLAS subroutine dgemm.
+- **3** Standard matrix-matrix multiplication with the BLAS subroutine dgemm.
 
 
 ---
@@ -25,24 +25,24 @@ methods:
 After installation, in order to run the program you need two symmetric matrices in CRS format.
 
 After having obtained two of those one should make an input file. The input file is structured as follows
-
+```
 filename_matrix_A       :: character
 filename_matrix_B       :: character
 num_loop                :: integer
 debug                   :: character, default is 'n', if 'y' the matrices are printed
-
+```
 To run the program then use the command
-
+```
 sparse < input 
-
+```
 if you wish to print the output in a file
-
+```
 sparse < input > output
-
+```
 If you run the program using the command
-
+```
 ./sparse
-
+```
 the terminal prints on the screen the instructions for the required input.
 It first asks to insert the path of the two files containing the sparse matrices
 to multiply. 
