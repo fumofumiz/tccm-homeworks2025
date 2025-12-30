@@ -90,23 +90,28 @@ module md_module
       T= 0.5d0 * T
      
       end function T 
-      
-      !compute the LJ potential
-       real*8 function V(eps,sigma,Natoms,distance)
+-!-------------------------------------------------------------------------
+!Function to compute the total potential energy
+!-------------------------------------------------------------------------
+!function which take as input epsilon, sigma, the number of atoms
+!and the array of distances and computes the total potential energy
+!using the Lennard-Jones potential       
+
+real*8 function V(eps,sigma,Natoms,distance)                
               implicit none
-              integer,intent(in) :: Natoms
-              real*8,intent(in) :: eps,sigma
-              real*8,intent(in) :: distance(Natoms,Natoms)
+              integer,intent(in) :: Natoms                         !number of atoms in the system
+              real*8,intent(in) :: eps,sigma                       !LJ parameters: eps = depth of the potential well
+                                                                   !sigma = distance at which the potential is zero 
+              real*8,intent(in) :: distance(Natoms,Natoms)         !matrix of interatomic distances rij
+              integer :: i,j-
+              real*8 :: rij                                        !distances between atoms i and j
 
-              integer :: i,j
-              real*8 :: rij
+              V=0.d0                                               !initialize total potential energy
 
-              V=0.d0
-
-              do i=1,Natoms-1
-                 do j=i+1,Natoms
-                    rij=distance(i,j)
-                    V=V+4.d0*eps*((sigma/rij)**12-(sigma/rij)**6)
+              do i=1,Natoms-1                                      !loop over first atom of the pair
+              do j=i+1,Natoms                                      !loop over second atom (avoid double counting)
+                    rij=distance(i,j)                              !extract the interatomic distance of the pair
+                    V=V+4.d0*eps*((sigma/rij)**12-(sigma/rij)**6)  !adding LJ potential 
                   enddo
               enddo
 
@@ -122,27 +127,31 @@ module md_module
 
       end function E 
 
+!--------------------------------------------------------------------------
+!Subroutine to compute atomic acceleratios 
+!--------------------------------------------------------------------------
+!subroutine which computes the acceleration vector for each atom and 
+!stores it in a double precision array
 
-      !compute the acceleration
        subroutine compute_acc(sigma,eps,Natoms,coord,mass,distance,acc)
               implicit none
 
-              integer,intent(in) :: Natoms
-              real*8,intent(in) :: coord(Natoms,3)
-              real*8,intent(in) :: distance(Natoms,Natoms)
-              real*8,intent(in) :: mass(Natoms)
-              real*8,intent(in) :: sigma,eps
-              real*8,intent(out) :: acc(Natoms,3)
+              integer,intent(in) :: Natoms                                           !Number of atoms
+              real*8,intent(in) :: coord(Natoms,3)                                   !cartesian coordinates of atoms 
+              real*8,intent(in) :: distance(Natoms,Natoms)                           !matrix of interatomic distances rij
+              real*8,intent(in) :: mass(Natoms)                                      !atomic masses 
+              real*8,intent(in) :: sigma,eps                                         !Lennard-Jones parameters
+              real*8,intent(out) :: acc(Natoms,3)                                    !output accelerations for each atom 
 
-              integer :: i,j
+              integer :: i,j                                    
               real*8 :: rij,u
 
-              acc=0.d0
+              acc=0.d0                                                               !initialize accelerations to zero 
 
-              do i=1,Natoms
+              do i=1,Natoms                                     
                  do j=1,Natoms
-                    if (i.ne.j) then
-                            rij=distance(i,j)
+                    if (i.ne.j) then                                                  !exclude self-interactions
+                            rij=distance(i,j)                                         !distance between atom i and j
                             u=(24.d0*eps/rij)*((sigma/rij)**6-2.d0*(sigma/rij)**12)
                             acc(i,1)=acc(i,1)-u*(coord(i,1)-coord(j,1))/rij
                             acc(i,2)=acc(i,2)-u*(coord(i,2)-coord(j,2))/rij
