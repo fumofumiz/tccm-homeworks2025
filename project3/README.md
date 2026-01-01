@@ -96,6 +96,77 @@ The main program is organized
 This file is a fortran module that provides the routines needed.
 
 ---
+### Function `read_Natoms`(input_file)
+
+This function reads the number of atoms of a molecule from an input file and stores it in a
+variable, Natoms.
+
+**Input argument:**
+- **`input_file`**  
+  Name of the input file.
+
+**Output argument:**
+- **`Natoms`**  
+  Number of atoms present in the molecule, it is the first number present in the input file.
+
+**Local variables:**
+- **`ios`**  
+  Status flag used to check whether the input file is opened and read correctly.
+
+
+### Subroutine `read_molecule`(input_file, Natoms, coord, mass)
+
+This subroutine reads the coordinates of the atoms present in the molecule from an 
+input file and stores it in a 2- dimensional array coord(Natoms,3). It also reads from input
+The mass of each atom and stores it in a 1-dimensional array, mass(Natoms).
+
+**Input argument:**
+- **`input_file`**  
+  Name of the input file.
+- **`Natoms`**  
+  Number of atoms present in the molecule.
+
+**Output argument:**
+- **`coord(Natoms,3)`**  
+  2-dimensional array where the coordinates of the molecule are stored.
+- **`mass(Natoms)`**
+ 1-dimensional array where the mass of each atom is stored.
+
+**Local variables:**
+- **`ios`**  
+  Status flag used to check whether the input file is opened and read correctly.
+
+
+### Subroutine `compute_distances`(Natoms, coord, mass)
+
+This subroutine computes the distance between two atoms. 
+
+For each pair of atoms \( i \) and \( j \), the distance is computed using the
+Euclidean distance formula in three-dimensional space:
+
+\[
+d_{ij} = \sqrt{(x_i - x_j)^2 + (y_i - y_j)^2 + (z_i - z_j)^2}
+\]
+
+The algorithm loops over all atom pairs, computes the squared differences 
+between their Cartesian coordinates along the x, y and z directions, sums them, 
+and finally applies the square root to obtain the distance between each pair of atoms. 
+
+**Input argument:**
+- **`Natoms`**  
+  Number of atoms present in the molecule.
+
+- **`coord(Natoms,3)`** 
+ 2-dimensional array where the coordinates of the molecule are stored.
+
+**Output argument:**
+- **`distance(Natoms, Natoms)`**  
+  2-dimensional array where the distance between atoms is stored.
+
+**Local variables:**
+- **`x,y,z`**  
+   Temporary variables used to store squared differences along x,y and z.
+
 
 ### Function `V(eps, sigma, Natoms, distance)`
 
@@ -118,6 +189,53 @@ This file is a fortran module that provides the routines needed.
 - **V**  
   Scalar containing the total potential energy.
 
+
+### Function T(Natoms, velocity, mass)
+
+This function computes the kinetic energy of a molecule.
+The kinetic energy is calculated using the following mathematical formula:
+
+\[
+T = \frac{1}{2} \sum_{i=1}^{Natoms} m_i v_i^2
+\]
+
+where \( m_i \) is the mass of the *i*-th atom and \( v_i^2 \) is the squared magnitude of its velocity vector.
+
+The algorithm loops over all atoms in the system, computes the squared velocity
+magnitude for each atom as the sum of the squares of its Cartesian velocity
+components, multiplies it by the corresponding atomic mass, and accumulates 
+the result. Finally, the total sum is divided by 2. 
+
+**Input argument:**
+- **`Natoms`**  
+  Number of atoms present in the molecule.
+- **`velocity(Natoms,3)`**  
+  2-dimensional array where the velocity components of each atom are stored.
+- **`mass(Natoms)`**  
+  1-dimensional array where the mass of each atom is stored.
+
+**Output argument:**
+- **`T`**  
+  Total kinetic energy of the molecule.
+
+**Local variables:**
+- **`v`**  
+  Temporary variable used to store the squared velocity magnitude of each atom.
+
+### Function E(T, V)
+
+This function computes the total energy of the system as the sum of
+kinetic and potential energy.
+
+**Input argument:**
+- **`T`**  
+  Total kinetic energy of the system.
+- **`velocity(Natoms,3)`**  
+  Total potential energy of the system.
+
+**Output argument:**
+- **`E`**  
+  Total energy of the system.
 
 ### Subroutine `compute_acc(sigma, eps, Natoms, coord, mass, distance, acc)`
 
