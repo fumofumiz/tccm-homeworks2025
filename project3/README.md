@@ -144,9 +144,7 @@ This subroutine computes the distance between two atoms.
 For each pair of atoms \( i \) and \( j \), the distance is computed using the
 Euclidean distance formula in three-dimensional space:
 
-\[
-d_{ij} = \sqrt{(x_i - x_j)^2 + (y_i - y_j)^2 + (z_i - z_j)^2}
-\]
+$$ d_{ij} = \sqrt{(x_i - x_j)^2 + (y_i - y_j)^2 + (z_i - z_j)^2} $$
 
 The algorithm loops over all atom pairs, computes the squared differences 
 between their Cartesian coordinates along the x, y and z directions, sums them, 
@@ -195,11 +193,9 @@ and finally applies the square root to obtain the distance between each pair of 
 This function computes the kinetic energy of a molecule.
 The kinetic energy is calculated using the following mathematical formula:
 
-\[
-T = \frac{1}{2} \sum_{i=1}^{Natoms} m_i v_i^2
-\]
+$$ T = \frac{1}{2} \sum_{i=1}^{Natoms} m_i v_i^2 $$
 
-where \( m_i \) is the mass of the *i*-th atom and \( v_i^2 \) is the squared magnitude of its velocity vector.
+where $m_i$ is the mass of the i-th atom and $v_i^2$ is the squared magnitude of its velocity vector.
 
 The algorithm loops over all atoms in the system, computes the squared velocity
 magnitude for each atom as the sum of the squares of its Cartesian velocity
@@ -257,7 +253,7 @@ kinetic and potential energy.
   Array containing the atomic masses.
 
 - **distance**  
-  Matrix of interatomic distances \( r_{ij} \).
+  Matrix of interatomic distances $r_{ij}$.
 
 ### Output 
 
