@@ -16,6 +16,7 @@ For the explicit CPU case, a graph (.png) was produced, showing the trend of the
 
 <img src="https://github.com/fumofumiz/tccm-homeworks2025/blob/master/project2b/results/execution_time_plot.png" width="750" />
  
-From the results, it is evident that for small matrix dimensions (1000-2500), the CPU/GPU time ratio is less than 1. In this range of matrix size, GPU parallelization is not convenient since the trade-off is unfavorable, as the data transfers are more costly than the parallel speedup.
-As the matrix dimension increases beyond approximately 2500, GPU acceleration becomes increasingly advantageous. For large matrices, the GPU implementation outperforms the CPU version, reaching a speedup of about 20x for the largest tested matrix size (25000).
-Finally, the manual CPU implementation based on explicit loops is always the least efficient approach. In all tested cases, it is approximately one order of magnitude slower than the CPU version using optimized Fortran intrinsic functions (matmul and dot_product). 
+From the results, it is evident that for small matrix dimensions (1000-5000), the CPU/GPU time ratio remains low. In this range of matrix size, GPU parallelization is not convenient since the trade-off is unfavorable, as the data transfers are more costly than the parallel speedup.
+As the matrix dimension increases beyond approximately 5000, GPU acceleration becomes increasingly advantageous. For large matrices, the GPU implementation outperforms the CPU version, reaching a speedup of several orders of magnitude.
+Finally, the manual CPU implementation based on explicit loops (CPUexp) is always the least efficient approach. 
+Overall, these results confirms that while optimized CPU implementations remain competitive for small problem sizes, GPU acceleration provides a better performance for large-scale matrix computations.  
