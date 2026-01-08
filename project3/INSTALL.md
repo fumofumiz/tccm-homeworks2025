@@ -9,7 +9,7 @@ The source code has to be in the same directory where you are compiling.
 
 # Test
 
-To test the program follow the instructions for use in the README.me file using the input in the 'test/' directory.
+To test the program follow the instructions for use in the README.me file using the input in the 'test/' directory and debug option on.
 
 
 
