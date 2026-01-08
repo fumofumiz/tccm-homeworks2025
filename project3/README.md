@@ -1,7 +1,9 @@
 # Molecular Dynamics
 
 Molecular dynamics with Lennard-Jones potential. 
-
+<p align="center">
+<img src="https://github.com/user-attachments/assets/7f3622a0-c34e-4939-be0a-a2a8947dfd27" width="200" />
+</p>
 ## Description
 
 This program runs a molecular dynamics simulation using a Lennard-Jones potential. For two atoms the this potential takes the form 
@@ -20,11 +22,10 @@ $$ v^{(n+1)} = v^{(n)}+\frac{1}{2}\left(a^{(n)}+a^{(n+1)} \right) $$
 
 Two parameters are needed to run the Verlet algorithm: the time step $dt$ and the total number of steps $nsteps$. The velocity is initialized to zero.
 
-## Instructions for use
+## Instructions for use 
 
 Once the code has been compiled (see INSTALL.md) it is very easy to use. First create an input file named
 'inp.txt' with the following format
--------
 ```
 NAtoms
 
