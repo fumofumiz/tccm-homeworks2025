@@ -83,8 +83,7 @@ representation highlights an approximate power-law scaling for all three methods
 manual dense implementation displays the steepest growth with matrix size.
 
 
-Overall, when the matrix size is varied at fixed filling, all methods exhibit a similar
-\( \mathcal{O}(N^3) \) scaling, with performance differences mainly arising from the
+Overall, when the matrix size is varied at fixed filling, all methods exhibit a similar scaling, with performance differences mainly arising from the
 prefactor. In contrast, when the filling factor is varied at fixed matrix size, the dense 
 approaches remain essentially unaffected, while the sparse implementation shows a strong 
 dependence on the filling due to the progressive loss of sparsity.
